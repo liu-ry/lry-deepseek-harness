@@ -52,4 +52,7 @@ pre-merge-commit:
 pre-push:
   jobs:
     - name: typecheck
-      run: pnpm run typecheck
+      # Runs through `sh -c` with the caller's environment. A shell without a
+      # global pnpm (nvm with no `default` alias, for example) would fail with
+      # `sh: 1: pnpm: not found`; resolve the project toolchain instead.
+      run: scripts/with-project-node.sh corepack pnpm run typecheck
